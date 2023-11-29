@@ -17,7 +17,9 @@ class FeedbackScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double buttonWidth = MediaQuery.of(context).size.width * 0.6;
     return  Scaffold(
-      appBar: customAppBar(context, feedback),
+        appBar: customAppBar(context: context, title: feedback, onPressed: (){
+          Navigator.of(context).pop();
+        } ),
       body: SafeArea(
         child: Scrollbar(
           child: SingleChildScrollView(

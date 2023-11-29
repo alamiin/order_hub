@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-customAppBar(BuildContext context, String title){
+customAppBar({required BuildContext context, required String title, required Function() onPressed}){
   return AppBar(leading: IconButton(
     icon: const Icon(Icons.arrow_back, color: Colors.white),
-    onPressed: () => Navigator.of(context).pop(),
+    onPressed: onPressed,
   ), title: Text(title, style: const TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w700),),
     centerTitle: true,
     backgroundColor: Colors.blue,

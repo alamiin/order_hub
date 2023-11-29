@@ -34,12 +34,18 @@ class _OrderScreenState extends State<OrderScreen> {
             context: context,
             name: "Order",
             callbackAction: (){
-
               Navigator.pushNamed(context, RouteHelper.invoiceRoute);
             }
         ),
 
-        appBar: (provider.isLoading ) ? null: customAppBar(context, provider.formName),
+        appBar: (provider.isLoading ) ? null: customAppBar(
+            context: context,
+            title: provider.formName,
+            onPressed: (){
+              Navigator.of(context).pop();
+            }
+        ),
+
 
         body: SafeArea(
           child: provider.isLoading ? const Center(

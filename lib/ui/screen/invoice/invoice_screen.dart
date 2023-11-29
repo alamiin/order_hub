@@ -15,39 +15,16 @@ class InvoiceScreen extends StatelessWidget {
     double buttonWidth = MediaQuery.of(context).size.width * 0.7;
     return WillPopScope(
       onWillPop: () async {
-
-        final value = await showDialog<bool>(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('Alert'),
-            content: const Text(invoiceExitAlert),
-            actions: [
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Provider.of<OrderProvider>(context, listen: false).resetOrderValue();
-                  Navigator.of(context).pop(true);
-                },
-                child: const Text('Yes'),
-              ),
-            ],
-          ),
-        );
-
-        if(value != null){
-          return Future.value(value);
-        }else{
-          return Future.value(false);
-        }
-
+        bool value = await showBackPressedDialog(context);
+        return Future.value(value);
       },
       child: Scaffold(
-
-        appBar: customAppBar(context, invoice),
+        appBar: customAppBar(context: context, title: invoice, onPressed: () async {
+          bool value = await showBackPressedDialog(context);
+          if(value){
+            Navigator.of(context).pop();
+          }
+        } ),
         body: SafeArea(
           child: Consumer<OrderProvider>(builder: (context, provider, child){
             return Column(
@@ -92,6 +69,38 @@ class InvoiceScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<bool> showBackPressedDialog(BuildContext context) async{
+
+    final value = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Alert'),
+        content: const Text(invoiceExitAlert),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('No'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Provider.of<OrderProvider>(context, listen: false).resetOrderValue();
+              Navigator.of(context).pop(true);
+            },
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
+    );
+
+    if(value != null){
+      return Future.value(value);
+    }else{
+      return Future.value(false);
+    }
+
   }
 
 
